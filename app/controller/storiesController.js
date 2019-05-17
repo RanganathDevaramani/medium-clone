@@ -68,7 +68,21 @@ router.post('/', authenticateUser, upload.single('storyImageUrl'), function(req,
             })
 
             let selectedTag = story.selectedTag.toString()
-            
+            Tags.update({
+                selectedTag : selectedTag
+            },
+            {
+                $push:{
+                    stories : story._id
+                }
+            }).exec(function(err, selectedTag){
+                console.log('story id is added to tags')
+            })
+            res.send(story)
+        })
+        .catch(function(err){
+            res.send(err)
+        })
  })
 
 router.get('/:id', authenticateUser, function (req, res) {
